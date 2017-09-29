@@ -6,12 +6,6 @@ import { connect } from "react-redux";
 
 class UserListElement extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.modalDeleteShow = this.modalDeleteShow.bind(this);
-    }
-
     render() {
         const user = this.props.user;
 
@@ -28,7 +22,7 @@ class UserListElement extends React.Component {
             </td>
             <td>
                 <Button bsSize="xsmall" data-id={user.id} data-username={user.username}
-                    onClick={this.modalDeleteShow}>
+                    onClick={(e) => this.modalDeleteShow(e)}>
                     Delete <Glyphicon glyph="remove-circle"/>
                 </Button>
             </td>

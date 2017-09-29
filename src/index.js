@@ -16,9 +16,11 @@ for (let i=1; i<10; i++) {
     });
 }
 const initial_state = {
-    users: users,
+    users: {
+        list: users,
+    },
 };
-const store = createStore(reducers, initial_state);
+const store = createStore(reducers, initial_state, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // render the main component
 ReactDOM.render(

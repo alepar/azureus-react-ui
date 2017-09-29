@@ -14,11 +14,26 @@ class UserDelete extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                    <Button>No</Button>
-                    <Button bsStyle={"primary"}>Yes</Button>
+                    <Button onClick={() => this.modalDeleteHide()}>No</Button>
+                    <Button bsStyle={"primary"} onClick={() => this.deleteUser()}>Yes</Button>
                 </Modal.Footer>
             </Modal>
         );
+    }
+
+    modalDeleteHide(event) {
+        this.props.dispatch({
+            type: "users.modalDeleteHide",
+        });
+    }
+
+    deleteUser(event) {
+        this.props.dispatch({
+            type: "users.userDelete",
+            id: this.props.modal_delete.id,
+        });
+
+        this.modalDeleteHide(event);
     }
 }
 
