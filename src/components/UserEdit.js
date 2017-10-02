@@ -1,12 +1,21 @@
 import React from "react";
 import { PageHeader, Form, FormGroup, Col, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 
 class UserEdit extends React.Component {
 
+    form_type;
+
+    constructor(props) {
+        super(props);
+
+        this.form_type = (props.initialValues.id > 0) ? 'edit' : 'add';
+    }
+
     render() {
         return (<div>
-            <PageHeader>User add/edit</PageHeader>
+            <PageHeader>User {this.form_type}</PageHeader>
             <Form horizontal>
                 <Field name={"username"} component={UserEdit.renderUsername}/>
                 <Field name={"job"} component={UserEdit.renderJob}/>
@@ -47,6 +56,26 @@ class UserEdit extends React.Component {
     }
 }
 
-export default UserEdit = reduxForm({
+UserEdit = reduxForm({
     form: "user_edit",
 })(UserEdit);
+
+function mapStateToProps(state, own_props) {
+    let form_data = {
+        id: 0,
+        username: '',
+        job: '',
+    };
+
+    for (const user of state.users.list) {
+        if (user.id === Number(own_props.params.id)) {
+            form_data = user;
+            break;
+        }
+    }
+
+    return {
+        initialValues: form_data,
+    };
+}
+export default connect(mapStateToProps)(UserEdit);
