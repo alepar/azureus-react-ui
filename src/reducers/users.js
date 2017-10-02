@@ -36,6 +36,31 @@ export default function users(state = {}, action) {
 
             return new_state;
 
+        case "users.add":
+
+            const id = Number(Math.random()*1000000).toPrecision(6);
+
+            new_state.list.push({
+                id: Number(id),
+                username: action.username,
+                job: action.job,
+            });
+
+            return new_state;
+
+        case "users.edit":
+
+            for (const user of new_state.list) {
+                if (user.id === action.id) {
+                    user.id = action.id;
+                    user.username = action.username;
+                    user.job = action.job;
+                    break;
+                }
+            }
+
+            return new_state;
+
         default:
             return state;
     }
