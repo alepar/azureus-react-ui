@@ -13,7 +13,7 @@ import NotFound from "./components/NotFound";
 import { reducers } from "./reducers/index"
 
 const users = [];
-for (let i=1; i<10; i++) {
+for (let i=1; i<128; i++) {
     users.push({
         id: i,
         username: "John " + i,
