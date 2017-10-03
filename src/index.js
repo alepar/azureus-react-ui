@@ -4,6 +4,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { browserHistory, Router, Route, IndexRoute } from "react-router";
 import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
 import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
 
 import "./stylesheets/main.scss";
 import App from "./components/App";
@@ -11,25 +12,14 @@ import Home from "./components/Home";
 import UserEdit from "./components/UserEdit";
 import NotFound from "./components/NotFound";
 import { reducers } from "./reducers/index"
-
-const users = [];
-for (let i=1; i<18; i++) {
-    users.push({
-        id: i,
-        username: "John " + i,
-        job: "Some job " + i,
-    });
-}
-const initial_state = {
-    users: {
-        list: users,
-    },
-};
+import { sagas } from "./sagas/index";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-let middleware = applyMiddleware(routerMiddleware(browserHistory));
-const store = createStore(reducers, initial_state, composeEnhancers(middleware));
+const sagaMiddleware = createSagaMiddleware();
+const middleware = applyMiddleware(routerMiddleware(browserHistory), sagaMiddleware);
+const store = createStore(reducers, composeEnhancers(middleware));
 const history = syncHistoryWithStore(browserHistory, store);
+sagaMiddleware.run(sagas);
 
 // render the main component
 ReactDOM.render(

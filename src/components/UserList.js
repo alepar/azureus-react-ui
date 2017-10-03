@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination, ProgressBar } from "react-bootstrap";
 import { push } from "react-router-redux";
 
 import UserListElement from "./UserListElement"
 import UserDelete from "./UserDelete";
 
 class UserList extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        if (0 === this.props.users.length) {
+            this.props.dispatch({
+                type: "users.fetchList",
+            });
+        }
+    }
 
     render() {
         const per_page = 10;
@@ -16,35 +26,42 @@ class UserList extends React.Component {
         const start_offset = (current_page-1) * per_page;
         let start_count = 0;
 
-        return (
-            <div>
-                <Table bordered hover responsive striped>
-                    <thead><tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Job</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr></thead>
-                    <tbody>
-                    {this.props.users.map((user, idx) => {
-                        if (idx >= start_offset && start_count < per_page) {
-                            start_count++;
-                            return (
-                                <UserListElement key={user.id} user={user}/>
-                            );
-                        }
-                    })}
-                    </tbody>
-                </Table>
+        if (this.props.users.length) {
+            return (
+                <div>
+                    <Table bordered hover responsive striped>
+                        <thead><tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Job</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr></thead>
+                        <tbody>
+                        {this.props.users.map((user, idx) => {
+                            if (idx >= start_offset && start_count < per_page) {
+                                start_count++;
+                                return (
+                                    <UserListElement key={user.id} user={user}/>
+                                );
+                            }
+                        })}
+                        </tbody>
+                    </Table>
 
-                <Pagination className={"users-pagination pull-right"} bsSize={"medium"}
-                            maxButtons={10} first last next prev boundaryLinks
-                            items={pages} activePage={current_page} onSelect={(page) => this.changePage(page)}/>
+                    <Pagination className={"users-pagination pull-right"} bsSize={"medium"}
+                                maxButtons={10} first last next prev boundaryLinks
+                                items={pages} activePage={current_page} onSelect={(page) => this.changePage(page)}/>
 
-                <UserDelete/>
-            </div>
-        );
+                    <UserDelete/>
+                </div>
+            );
+        } else {
+            return (
+                <ProgressBar active now={100}/>
+            );
+        }
+
     }
 
     changePage(page) {
@@ -56,7 +73,7 @@ class UserList extends React.Component {
 
 function mapStateToProps(state) {
     return ({
-        users: state.users.list,
+        users: state.users.list || [],
         page: Number(state.routing.locationBeforeTransitions.query.page) || 1,
     });
 }
