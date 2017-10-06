@@ -29,6 +29,11 @@ class UserDelete extends React.Component {
 
     deleteUser(event) {
         this.props.dispatch({
+            type: "users.saga.delete",
+            id: this.props.modal_delete.id,
+        });
+
+        this.props.dispatch({
             type: "users.userDelete",
             id: this.props.modal_delete.id,
         });

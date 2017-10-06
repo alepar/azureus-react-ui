@@ -31,6 +31,13 @@ class UserEdit extends React.Component {
 
     formSubmit(values) {
         this.props.dispatch({
+            type: "users.saga." + this.form_type,
+            id: Number(values.id),
+            username: values.username,
+            job: values.job,
+        });
+
+        this.props.dispatch({
             type: "users." + this.form_type,
             id: Number(values.id),
             username: values.username,

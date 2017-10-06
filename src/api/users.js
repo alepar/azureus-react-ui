@@ -19,4 +19,16 @@ export default class ApiUsers {
         });
     }
 
+    static add(action) {
+
+    }
+
+    static edit(action) {
+
+    }
+
+    static delete(action) {
+
+    }
+
 }

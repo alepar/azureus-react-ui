@@ -13,7 +13,7 @@ class UserList extends React.Component {
 
         if (0 === this.props.users.length) {
             this.props.dispatch({
-                type: "users.fetchList",
+                type: "users.saga.list",
             });
         }
     }

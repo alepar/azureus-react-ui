@@ -10,3 +10,16 @@ export function* usersFetchList(action) {
         users: users,
     });
 }
+
+export function* usersAdd(action) {
+    yield call(ApiUsers.add, action);
+}
+
+export function* usersEdit(action) {
+    yield call(ApiUsers.edit, action);
+}
+
+export function* usersDelete(action) {
+    yield call(ApiUsers.delete, action);
+}
+
